@@ -10,4 +10,7 @@ release:
 test: debug
 	openfl test linux -debug
 
+clean:
+	openfl clean linux
+
 .PHONY: all debug test release
