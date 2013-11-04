@@ -2,8 +2,9 @@ package;
 
 import flash.Lib;
 import org.flixel.FlxGame;
+import org.flixel.FlxG;
 	
-class MainClass extends FlxGame
+class ProjectClass extends FlxGame
 {	
 	public function new()
 	{
