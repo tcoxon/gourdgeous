@@ -6,8 +6,8 @@
     <movie input="" />
     <movie path="Gourdgeous.xml" />
     <movie fps="30" />
-    <movie width="160" />
-    <movie height="144" />
+    <movie width="480" />
+    <movie height="432" />
     <movie version="3" />
     <movie minorVersion="0" />
     <movie platform="NME" />

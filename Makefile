@@ -7,7 +7,13 @@ debug:
 release:
 	openfl build linux
 
-test: debug
+flash:
+	openfl build flash
+
+flash-test:
+	openfl test flash
+
+test:
 	openfl test linux -debug
 
 clean:

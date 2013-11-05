@@ -11,7 +11,7 @@ class BitmapFont {
     var rowHeight: Int;
 
     public function new(asset: String) {
-        this.sheet = FlxG.addBitmap(asset);
+        sheet = FlxG.addBitmap(asset);
         colWidth = 8;
         rowHeight = 16;
     }
@@ -46,11 +46,11 @@ class BitmapFont {
     }
 
     public function draw(?canvas: BitmapData, text: String): BitmapData {
-        var width = text.length * colWidth;
+        var width = Std.int(Math.max(text.length * colWidth, 1));
         var height = rowHeight;
 
         if (canvas == null) {
-            canvas = new BitmapData(width, height, true);
+            canvas = new BitmapData(width, height, true, 0);
         }
 
         var dest = new Point(0,0);

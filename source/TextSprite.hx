@@ -35,6 +35,7 @@ class TextSprite extends FlxSprite {
         }
 
         my_text = text;
+        dirty = true;
         return text;
     }
 
@@ -63,10 +64,10 @@ class TextBox extends MovableGroup {
         background.loadGraphic("assets/gourdgeous/TextboxBackground.png");
         add(background);
 
-        textSpr = new TextSprite(8, 8, FlxG.width-16, 32);
+        textSpr = new TextSprite(8, 8, 144, 32);
         add(textSpr);
 
-        waitSymbol = new TextSprite(FlxG.width-16, 36, 8, 16);
+        waitSymbol = new TextSprite(144, 36, 8, 16);
         waitSymbol.text = "_";
         add(waitSymbol);
         waitSymbol.kill();
