@@ -51,14 +51,15 @@ class Pumpkin extends MovableGroup {
 class TextSprite extends FlxSprite {
 
     public var font: BitmapFont;
-    public var text(default, set_text): String;
+    public var text(get, set): String;
+    private var my_text: String;
 
     public function new(?x: Float, ?y: Float, width: Int, height: Int) {
         super(x,y);
         this.width = width;
         this.height = height;
         font = new BitmapFont("assets/gourdgeous/font.png");
-        set_text("This is a test; please ignore!");
+        text = "";
     }
 
     public function set_text(text:String) {
@@ -72,7 +73,12 @@ class TextSprite extends FlxSprite {
             dest.y += lineCanvas.height;
         }
 
+        my_text = text;
         return text;
+    }
+
+    public function get_text() {
+        return my_text;
     }
 }
 
@@ -80,8 +86,12 @@ class TextBox extends MovableGroup {
 
     public var background: FlxSprite;
     public var textSpr: TextSprite;
+    private var text: String;
+    private var lines: Array<String>;
+    private var textPos: Int;
+    private var lineNo: Int;
 
-    public function new() {
+    public function new(text: String) {
         super();
 
         background = new FlxSprite();
@@ -90,10 +100,27 @@ class TextBox extends MovableGroup {
 
         textSpr = new TextSprite(8, 8, FlxG.width-16, 32);
         add(textSpr);
+
+        this.text = text;
+        lines = text.wrapWords(18);
+        textPos = lineNo = 0;
     }
 
     override public function update() {
         super.update();
+
+        var curLine = lines[lineNo];
+        if (textPos >= curLine.length) {
+            if (lineNo + 1 < lines.length) {
+                textPos = 0;
+                ++lineNo;
+                textSpr.text = curLine+"\n";
+            }
+        } else {
+            var c = curLine.charAt(textPos);
+            textSpr.text += c;
+            ++textPos;
+        }
     }
 
     override public function destroy() {
@@ -121,7 +148,7 @@ class PlayState extends FlxState {
         pumpkin.x = pumpkin.y = 48;
         add(pumpkin);
 
-        var textbox = new TextBox();
+        var textbox = new TextBox("This is a test; please wait for the signal to ignore!\nOr just don't...\n\nWhatever.");
         add(textbox);
     }
 }
