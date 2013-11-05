@@ -47,10 +47,14 @@ class TextBox extends MovableGroup {
 
     public var background: FlxSprite;
     public var textSpr: TextSprite;
+    private var waitSymbol: TextSprite;
     private var text: String;
     private var lines: Array<String>;
     private var textPos: Int;
     private var lineNo: Int;
+    public var waitingToProceed: Bool;
+    public var waitingToComplete: Bool;
+    private var frame: Int;
 
     public function new(text: String) {
         super();
@@ -62,25 +66,60 @@ class TextBox extends MovableGroup {
         textSpr = new TextSprite(8, 8, FlxG.width-16, 32);
         add(textSpr);
 
+        waitSymbol = new TextSprite(FlxG.width-16, 36, 8, 16);
+        waitSymbol.text = "_";
+        add(waitSymbol);
+        waitSymbol.kill();
+
         this.text = text;
         lines = text.wrapWords(18);
         textPos = lineNo = 0;
+
+        waitingToProceed = false;
+        waitingToComplete = false;
     }
 
     override public function update() {
         super.update();
 
-        var curLine = lines[lineNo];
-        if (textPos >= curLine.length) {
-            if (lineNo + 1 < lines.length) {
-                textPos = 0;
-                ++lineNo;
-                textSpr.text = curLine+"\n";
+        if (waitingToComplete &&
+                (FlxG.keys.justPressed("C") || FlxG.keys.justPressed("X"))) {
+            kill();
+            return;
+        }
+
+        ++frame;
+        
+        if (!FlxG.keys.justPressed("X")) {
+            var curLine = lines[lineNo];
+            if (textPos >= curLine.length) {
+                if (lineNo + 1 < lines.length) {
+                    waitingToProceed = true;
+                    if (lineNo < 1 || FlxG.keys.justPressed("C")) {
+                        textPos = 0;
+                        ++lineNo;
+                        if (lineNo > 1) {
+                            lineNo = 1;
+                            lines.shift();
+                        }
+                        textSpr.text = curLine+"\n";
+                        waitingToProceed = false;
+                    }
+                } else {
+                    waitingToComplete = true;
+                }
+            } else {
+                var c = curLine.charAt(textPos);
+                textSpr.text += c;
+                ++textPos;
             }
         } else {
-            var c = curLine.charAt(textPos);
-            textSpr.text += c;
-            ++textPos;
+            // TODO show entire page
+        }
+
+        waitSymbol.kill();
+        if ((waitingToProceed || waitingToComplete) && frame&4 != 0) {
+            waitSymbol.revive();
         }
     }
 
