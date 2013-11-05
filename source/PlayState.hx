@@ -48,13 +48,38 @@ class Pumpkin extends MovableGroup {
 }
 
 
+class TextSprite extends FlxSprite {
+
+    public var font: BitmapFont;
+    public var text(default, set_text): String;
+
+    public function new(?x: Float, ?y: Float, width: Int, height: Int) {
+        super(x,y);
+        this.width = width;
+        this.height = height;
+        font = new BitmapFont("assets/gourdgeous/font.png");
+        set_text("This is a test; please ignore!");
+    }
+
+    public function set_text(text:String) {
+        var lines = text.wrapWords(Std.int(width / font.charWidth()));
+
+        pixels = new BitmapData(Std.int(width), Std.int(height), true, 0);
+        var dest = new Point(0,0);
+        for (line in lines) {
+            var lineCanvas = font.draw(line);
+            pixels.copyPixels(lineCanvas, lineCanvas.rect, dest);
+            dest.y += lineCanvas.height;
+        }
+
+        return text;
+    }
+}
+
 class TextBox extends MovableGroup {
 
     public var background: FlxSprite;
-    public var font: BitmapFont;
-    public var textSprite: FlxSprite;
-    public var text(default,set_text): String;
-    public var lines: Array<String>;
+    public var textSpr: TextSprite;
 
     public function new() {
         super();
@@ -63,52 +88,16 @@ class TextBox extends MovableGroup {
         background.loadGraphic("assets/gourdgeous/TextboxBackground.png");
         add(background);
 
-        set_text("This is a test; please ignore!");
-
-        font = new BitmapFont("assets/gourdgeous/font.png");
-    }
-
-    public function set_text(text: String) {
-        if (textSprite != null) {
-            textSprite.destroy();
-            textSprite = null;
-        }
-        lines = text.wrapWords(18);
-        return text;
+        textSpr = new TextSprite(8, 8, FlxG.width-16, 32);
+        add(textSpr);
     }
 
     override public function update() {
         super.update();
-        
-        if (textSprite == null) {
-            textSprite = new FlxSprite(8,8);
-            textSprite.width = FlxG.width-16;
-            textSprite.height = 32;
-            add(textSprite);
-        //}
-
-        /* if we need to refresh the text: */
-        //if (true) {
-            textSprite.pixels = new BitmapData(
-                Std.int(textSprite.width), Std.int(textSprite.height),
-                true, 0);
-            var dest = new Point(0,0);
-            // TODO only visible lines
-            for (line in lines) {
-                var lineCanvas = font.draw(line);
-                textSprite.pixels.copyPixels(lineCanvas, lineCanvas.rect, dest);
-                dest.y += lineCanvas.height;
-                trace(lineCanvas.rect);
-            }
-            
-            trace(textSprite.pixels.rect);
-            trace(textSprite.width);
-            trace(textSprite.height);
-        }
     }
 
     override public function destroy() {
-        textSprite.destroy();
+        textSpr.destroy();
         background.destroy();
         super.destroy();
     }
