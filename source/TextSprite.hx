@@ -90,7 +90,7 @@ class TextBox extends MovableGroup {
 
         ++frame;
         
-        if (!FlxG.keys.justPressed("X")) {
+        do {
             var curLine = lines[lineNo];
             if (textPos >= curLine.length) {
                 if (lineNo + 1 < lines.length) {
@@ -108,14 +108,13 @@ class TextBox extends MovableGroup {
                 } else {
                     waitingToComplete = true;
                 }
+                break;
             } else {
                 var c = curLine.charAt(textPos);
                 textSpr.text += c;
                 ++textPos;
             }
-        } else {
-            // TODO show entire page
-        }
+        } while (FlxG.keys.X);
 
         waitSymbol.kill();
         if ((waitingToProceed || waitingToComplete) && frame&4 != 0) {
