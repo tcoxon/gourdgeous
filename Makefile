@@ -19,4 +19,7 @@ test:
 clean:
 	openfl clean linux
 
-.PHONY: all debug test release
+upload: flash
+	scp index.html Gourdgeous.swf bytten.net:/home/tomc/public_html/games/gourdgeous/
+
+.PHONY: all debug test release clean flash flash-test upload
