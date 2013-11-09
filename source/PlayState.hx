@@ -110,7 +110,7 @@ class PlayState extends FlxState {
 
     public function responseClosed() {
         ++question;
-        if (question >= Dialogue.QUESTIONS.length) {
+        if (score <= 0 || question >= Dialogue.QUESTIONS.length) {
             if (score >= 100) {
                 endGame(Dialogue.BEST_ENDING);
             } else if (score > 0) {
