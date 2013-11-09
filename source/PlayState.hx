@@ -29,6 +29,9 @@ class Pumpkin extends MovableGroup {
 class PlayState extends FlxState {
 
     var pumpkin: Pumpkin;
+
+    var score: Int;
+    var question: Int;
     
     override public function create() {
         super.create();
@@ -44,21 +47,41 @@ class PlayState extends FlxState {
         startGame();
     }
 
-    public function startGame() {
-        // TODO start first question
-        endGame(Dialogue.BEST_ENDING);
+    private function showTextBox(text: String, onClose: Void->Void) {
+        var textbox = new TextBox(text);
+        textbox.onClose = onClose;
+        add(textbox);
     }
 
+    public function startGame() {
+        question = 0;
+        score = 50;
+        showQuestion();
+    }
+
+    public function showQuestion() {
+        var q = Dialogue.QUESTIONS[question];
+        showTextBox(q.text, questionClosed);
+    }
+
+    private var textspr: TextSprite;
+
     public function questionClosed() {
+        var q = Dialogue.QUESTIONS[question];
+        var textspr = new TextSprite(8, 8, 144, 32);
+        textspr.text = q.simpleText;
+        add(textspr);
         // TODO display menu, candle
     }
 
     public function answerChosen(ansNo: Int) {
         // TODO modify score, show response
+        if (textspr != null) textspr.kill();
     }
 
     public function timedOut() {
         // TODO end game
+        if (textspr != null) textspr.kill();
     }
 
     public function responseClosed() {

@@ -80,7 +80,7 @@ class Dialogue {
             ]),
         new Question(
             "So... I don't know anything about you. What do you like doing?",
-            "What do you like doing?",
+            "What do you like?",
             [
                 new Answer(
                     "Video games", -20,
