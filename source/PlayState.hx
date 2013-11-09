@@ -7,8 +7,18 @@ import TextSprite;
 import MenuSprite;
 import Dialogue;
 
+using MyUtil;
+
 
 class Pumpkin extends MovableGroup {
+
+    public static var FACES = [
+        "cry" => 0,
+        "sad" => 25,
+        "meh" => 50,
+        "happy" => 75,
+        "ecstatic" => 100,
+    ];
 
     public var background: FlxSprite;
     public var face: FlxSprite;
@@ -23,6 +33,25 @@ class Pumpkin extends MovableGroup {
         face = new FlxSprite();
         face.loadGraphic("assets/gourdgeous/Faces/happy.png");
         add(face);
+    }
+
+    public function setFace(face: String) {
+        this.face.loadGraphic("assets/gourdgeous/Faces/"+face+".png");
+    }
+
+    public function updateFaceForScore(score: Int) {
+        var bestD = 999999.;
+        var bestFace = null;
+        for (face in FACES.keys()) {
+            var faceVal = FACES[face];
+            var d = Math.abs(faceVal - score);
+            if (d < bestD) {
+                bestD = d;
+                bestFace = face;
+            }
+        }
+        (bestFace != null).assert();
+        setFace(bestFace);
     }
 }
 
@@ -41,7 +70,7 @@ class PlayState extends FlxState {
         background.loadGraphic("assets/gourdgeous/Background.png");
         add(background);
 
-        var pumpkin = new Pumpkin();
+        pumpkin = new Pumpkin();
         pumpkin.x = pumpkin.y = 48;
         add(pumpkin);
 
@@ -57,6 +86,7 @@ class PlayState extends FlxState {
     public function startGame() {
         question = 0;
         score = 50;
+        pumpkin.updateFaceForScore(score);
         showQuestion();
     }
 
@@ -97,6 +127,7 @@ class PlayState extends FlxState {
         score += a.score;
         if (a.score < 0) shakePumpkin();
         else if (a.score > 0) winkPumpkin();
+        pumpkin.updateFaceForScore(score);
 
         // show response
         showTextBox(a.response, responseClosed);
