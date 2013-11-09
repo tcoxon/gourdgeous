@@ -4,6 +4,7 @@ import org.flixel.*;
 
 import Sprites;
 import TextSprite;
+import MenuSprite;
 import Dialogue;
 
 
@@ -65,37 +66,68 @@ class PlayState extends FlxState {
     }
 
     private var textspr: TextSprite;
+    private var menuspr: MenuSprite;
 
     public function questionClosed() {
         var q = Dialogue.QUESTIONS[question];
-        var textspr = new TextSprite(8, 8, 144, 32);
+        textspr = new TextSprite(8, 8, 144, 32);
         textspr.text = q.simpleText;
         add(textspr);
+
+        add(menuspr = new MenuSprite([for (ans in q.answers)
+                                new MenuOption(ans.text, answerChosen)]));
         // TODO display menu, candle
     }
 
+    public function shakePumpkin() {
+        // TODO, sound also
+    }
+
+    public function winkPumpkin() {
+        // TODO, sound also
+    }
+
     public function answerChosen(ansNo: Int) {
-        // TODO modify score, show response
-        if (textspr != null) textspr.kill();
+        textspr.kill(); textspr = null;
+        menuspr.kill(); menuspr = null;
+
+        var q = Dialogue.QUESTIONS[question];
+        var a = q.answers[ansNo];
+
+        score += a.score;
+        if (a.score < 0) shakePumpkin();
+        else if (a.score > 0) winkPumpkin();
+
+        // show response
+        showTextBox(a.response, responseClosed);
     }
 
     public function timedOut() {
-        // TODO end game
-        if (textspr != null) textspr.kill();
+        textspr.kill(); textspr = null;
+        menuspr.kill(); menuspr = null;
+        endGame(Dialogue.OUT_OF_TIME_ENDING);
     }
 
     public function responseClosed() {
-        // TODO display next question or end game
+        ++question;
+        if (question >= Dialogue.QUESTIONS.length) {
+            if (score >= 100) {
+                endGame(Dialogue.BEST_ENDING);
+            } else if (score > 0) {
+                endGame(Dialogue.MIDDLE_ENDING);
+            } else {
+                endGame(Dialogue.WORST_ENDING);
+            }
+            return;
+        }
+        showQuestion();
     }
 
     public function endGame(ending: String) {
-        var textbox = new TextBox(ending);
-        textbox.onClose = endGameDone;
-        add(textbox);
+        showTextBox(ending, endGameDone);
     }
 
     public function endGameDone() {
-        // TODO reset
-        startGame();
+        FlxG.switchState(new MenuState());
     }
 }

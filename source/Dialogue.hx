@@ -29,7 +29,7 @@ class Dialogue {
     public static inline var BEST_ENDING = 
         "Hey, why don't we go back to your porch and you pop your candle inside me?";
     public static inline var MIDDLE_ENDING =
-        "Thanks for meeting me. I had a nice time, but I didn't feel the 'click'.";
+        "Thanks for meeting me. I had a nice time, but I don't think we really 'clicked'.";
     public static inline var WORST_ENDING =
         "I don't think we're compatible. At all. Sorry.";
     public static inline var OUT_OF_TIME_ENDING =
