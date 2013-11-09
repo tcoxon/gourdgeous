@@ -56,6 +56,7 @@ class TextBox extends MovableGroup {
     public var waitingToProceed: Bool;
     public var waitingToComplete: Bool;
     private var frame: Int;
+    public var onClose: Void -> Void;
 
     public function new(text: String) {
         super();
@@ -78,6 +79,8 @@ class TextBox extends MovableGroup {
 
         waitingToProceed = false;
         waitingToComplete = false;
+
+        onClose = null;
     }
 
     override public function update() {
@@ -86,6 +89,7 @@ class TextBox extends MovableGroup {
         if (waitingToComplete &&
                 (FlxG.keys.justPressed("C") || FlxG.keys.justPressed("X"))) {
             kill();
+            if (onClose != null) onClose();
             return;
         }
 

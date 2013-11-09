@@ -4,6 +4,7 @@ import org.flixel.*;
 
 import Sprites;
 import TextSprite;
+import Dialogue;
 
 
 class Pumpkin extends MovableGroup {
@@ -28,7 +29,6 @@ class Pumpkin extends MovableGroup {
 class PlayState extends FlxState {
 
     var pumpkin: Pumpkin;
-    var textbox: TextBox;
     
     override public function create() {
         super.create();
@@ -41,7 +41,38 @@ class PlayState extends FlxState {
         pumpkin.x = pumpkin.y = 48;
         add(pumpkin);
 
-        var textbox = new TextBox("Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.\n\nDuis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.");
+        startGame();
+    }
+
+    public function startGame() {
+        // TODO start first question
+        endGame(Dialogue.BEST_ENDING);
+    }
+
+    public function questionClosed() {
+        // TODO display menu, candle
+    }
+
+    public function answerChosen(ansNo: Int) {
+        // TODO modify score, show response
+    }
+
+    public function timedOut() {
+        // TODO end game
+    }
+
+    public function responseClosed() {
+        // TODO display next question or end game
+    }
+
+    public function endGame(ending: String) {
+        var textbox = new TextBox(ending);
+        textbox.onClose = endGameDone;
         add(textbox);
+    }
+
+    public function endGameDone() {
+        // TODO reset
+        startGame();
     }
 }
