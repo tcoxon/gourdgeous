@@ -104,13 +104,13 @@ class Pumpkin extends MovableGroup {
         if (shaking) {
             var period = 4;
             var t = frames % period;
-            face.x = Math.cos(t * 2 * Math.PI / period) * 2 + baseX;
+            face.x = Std.int(Math.cos(t * 2 * Math.PI / period) * 2 + baseX);
         }
 
         if (winking) {
             var period = 8;
             var t = frames % period;
-            face.y = Math.cos(t * 2 * Math.PI / period) * 2 + baseY;
+            face.y = Std.int(Math.cos(t * 2 * Math.PI / period) * 2 + baseY);
         }
     }
 }
