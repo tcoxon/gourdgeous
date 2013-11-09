@@ -18,6 +18,7 @@ test:
 
 clean:
 	openfl clean linux
+	openfl clean flash
 
 upload: flash
 	scp index.html Gourdgeous.swf bytten.net:/home/tomc/public_html/games/gourdgeous/

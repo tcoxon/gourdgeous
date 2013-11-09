@@ -77,6 +77,7 @@ class Pumpkin extends MovableGroup {
         baseX = face.x;
         if (currentFace != "cry")
             setFace("sad");
+        Sounds.SAD.play();
         timer.start(0.7, 1, function(_) {
             shaking = false;
             updateFaceForScore(score);
@@ -90,6 +91,7 @@ class Pumpkin extends MovableGroup {
         frames = 0;
         baseY = face.y;
         setFace("wink");
+        Sounds.WINK.play();
         timer.start(0.7, 1, function(_) {
             winking = false;
             updateFaceForScore(score);

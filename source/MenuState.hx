@@ -12,6 +12,8 @@ import org.flixel.FlxState;
 import org.flixel.FlxText;
 import org.flixel.util.FlxMath;
 
+import Sounds;
+
 class MenuState extends FlxState
 {
 	/**
@@ -27,6 +29,8 @@ class MenuState extends FlxState
         FlxG.mouse.useSystemCursor = true;
 		FlxG.mouse.show();
 		#end
+
+        Sounds.init();
 		
 		super.create();
 	}

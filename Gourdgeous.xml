@@ -11,8 +11,19 @@
 	
 	<classpath name="source" />
 	
-	<assets path="assets" exclude="*.wav" if="flash" />
-	<assets path="assets" if="desktop" />
+	<assets path="assets" if="flash">
+        <sound path="gourdgeous/sad.mp3" id="Sad"/>
+        <sound path="gourdgeous/wink.mp3" id="Wink"/>
+        <sound path="data/beep.mp3" id="Beep"/>
+    </assets>
+	<assets path="assets" exclude="*.wav|*.xcf" if="flash"/>
+
+	<assets path="assets" if="desktop">
+        <sound path="gourdgeous/sad.wav" id="Sad"/>
+        <sound path="gourdgeous/wink.wav" id="Wink"/>
+        <sound path="data/beep.wav" id="Beep"/>
+    </assets>
+	<assets path="assets" exclude="*.mp3|*.xcf" if="desktop"/>
 	
 	<icon name="assets/HaxeFlixel.svg" />
 	
