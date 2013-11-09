@@ -14,10 +14,12 @@ class Answer {
 
 class Question {
     public var text: String;
+    public var simpleText: String;
     public var answers: Array<Answer>;
 
-    public function new(text: String, answers: Array<Answer>) {
+    public function new(text: String, simpleText: String, answers: Array<Answer>) {
         this.text = text;
+        this.simpleText = simpleText;
         this.answers = answers;
     }
 }
@@ -36,6 +38,7 @@ class Dialogue {
     public static var QUESTIONS: Array<Question> = [
         new Question(
             "Nice to meet you!\nMy friend said you were pretty cool, but not what your name is.\nWhat shall I call you?",
+            "What is your name?",
             [
                 new Answer(
                     "Player1", 20,
@@ -56,6 +59,7 @@ class Dialogue {
             ]),
         new Question(
             "Oh! You brought me a gift... How thoughtful!\nWhat is it?",
+            "What is the gift?",
             [
                 new Answer(
                     "Pumpkin pie", -20,
@@ -76,6 +80,7 @@ class Dialogue {
             ]),
         new Question(
             "So... I don't know anything about you. What do you like doing?",
+            "What do you like doing?",
             [
                 new Answer(
                     "Video games", -20,
