@@ -21,7 +21,7 @@ class Pumpkin extends MovableGroup {
         add(background);
         
         face = new FlxSprite();
-        face.loadGraphic("assets/gourdgeous/Faces/Default/001.png");
+        face.loadGraphic("assets/gourdgeous/Faces/happy.png");
         add(face);
     }
 }
