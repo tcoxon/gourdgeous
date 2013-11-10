@@ -15,6 +15,10 @@ class PlayState extends FlxState {
     var candle: Candle;
     var glitchBar: GlitchBar;
 
+    var baseLayer: FlxGroup;
+    var glitchLayer: FlxGroup;
+    var screenLayer: FlxGroup;
+
     var score(get,set): Int;
     private var fScore: Int;
     var question: Int;
@@ -22,20 +26,27 @@ class PlayState extends FlxState {
     override public function create() {
         super.create();
 
+        baseLayer = new FlxGroup();
+        add(baseLayer);
+        glitchLayer = new FlxGroup();
+        add(glitchLayer);
+        screenLayer = new FlxGroup();
+        add(screenLayer);
+
         var background = new FlxSprite();
         background.loadGraphic("assets/gourdgeous/Background.png");
-        add(background);
+        baseLayer.add(background);
 
         pumpkin = new Pumpkin();
         pumpkin.x = pumpkin.y = 48;
-        add(pumpkin);
+        baseLayer.add(pumpkin);
 
-        add(candle = new Candle());
+        baseLayer.add(candle = new Candle());
         candle.x = 16;
         candle.y = 56;
         candle.onTimeOut = timedOut;
 
-        add(glitchBar = new GlitchBar());
+        glitchLayer.add(glitchBar = new GlitchBar());
         glitchBar.x = 160 - glitchBar.width;
 
         startGame();
@@ -55,7 +66,7 @@ class PlayState extends FlxState {
     private function showTextBox(text: String, onClose: Void->Void) {
         var textbox = new TextBox(text);
         textbox.onClose = onClose;
-        add(textbox);
+        baseLayer.add(textbox);
     }
 
     public function startGame() {
@@ -76,9 +87,9 @@ class PlayState extends FlxState {
         var q = Dialogue.QUESTIONS[question];
         textspr = new TextSprite(8, 8, 144, 32);
         textspr.text = q.simpleText;
-        add(textspr);
+        baseLayer.add(textspr);
 
-        add(menuspr = new MenuSprite([for (ans in q.answers)
+        baseLayer.add(menuspr = new MenuSprite([for (ans in q.answers)
                                 new MenuOption(ans.text, answerChosen)]));
         candle.resetCandle();
     }
@@ -145,7 +156,7 @@ class PlayState extends FlxState {
                     wp.x = FlxG.random() * wp.x;
                 else
                     wp.y = FlxG.random() * wp.y;
-                add(wp);
+                glitchLayer.add(wp);
             }
         }
     }
