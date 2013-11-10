@@ -21,6 +21,6 @@ clean:
 	openfl clean flash
 
 upload: flash
-	scp index.html Gourdgeous.swf bytten.net:/home/tomc/public_html/games/gourdgeous/
+	scp index.html Gourdgeous.swf gbjam2.html noncheaty.swf bytten.net:/home/tomc/public_html/games/gourdgeous/
 
 .PHONY: all debug test release clean flash flash-test upload
