@@ -13,8 +13,10 @@ class PlayState extends FlxState {
 
     var pumpkin: Pumpkin;
     var candle: Candle;
+    var glitchBar: GlitchBar;
 
-    var score: Int;
+    var score(get,set): Int;
+    private var fScore: Int;
     var question: Int;
     
     override public function create() {
@@ -33,7 +35,21 @@ class PlayState extends FlxState {
         candle.y = 56;
         candle.onTimeOut = timedOut;
 
+        add(glitchBar = new GlitchBar());
+        glitchBar.x = 160 - glitchBar.width;
+
         startGame();
+    }
+
+    private function get_score() {
+        return fScore;
+    }
+
+    private function set_score(s: Int) {
+        pumpkin.updateFaceForScore(s);
+        glitchBar.value = s;
+        fScore = s;
+        return s;
     }
 
     private function showTextBox(text: String, onClose: Void->Void) {
@@ -45,7 +61,6 @@ class PlayState extends FlxState {
     public function startGame() {
         question = 0;
         score = 50;
-        pumpkin.updateFaceForScore(score);
         showQuestion();
     }
 
@@ -77,7 +92,6 @@ class PlayState extends FlxState {
         var a = q.answers[ansNo];
 
         score += a.score;
-        pumpkin.updateFaceForScore(score);
         if (a.score < 0) pumpkin.shake();
         else if (a.score > 0) pumpkin.wink();
 
