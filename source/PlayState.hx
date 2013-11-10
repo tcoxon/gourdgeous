@@ -128,4 +128,25 @@ class PlayState extends FlxState {
     public function endGameDone() {
         FlxG.switchState(new MenuState());
     }
+
+
+    override public function update() {
+        super.update();
+
+        if (score > 50) {
+            var progress = (score-50)/50;
+            progress *= progress;
+            var threshold = 1 - progress * 0.7;
+            if (FlxG.random() > threshold) {
+                var wp = new WalkingPixel();
+                wp.x = 160;
+                wp.y = 144;
+                if (FlxG.random() < 0.5)
+                    wp.x = FlxG.random() * wp.x;
+                else
+                    wp.y = FlxG.random() * wp.y;
+                add(wp);
+            }
+        }
+    }
 }
