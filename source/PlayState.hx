@@ -157,7 +157,7 @@ class PlayState extends FlxState {
     }
 
     public function endGameDone() {
-        if (score >= 100) {
+        if (score >= 100 && Params.isCheaty()) {
             FlxG.camera.fade(0xff000000, 3, fadedOut);
         } else {
             new FlxTimer().start(1,1, function(_) {

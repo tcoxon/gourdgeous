@@ -3,6 +3,8 @@ package;
 import flash.display.BlendMode;
 import org.flixel.*;
 
+import Params;
+
 
 class BatteryIndicator extends FlxSprite {
 
@@ -22,10 +24,12 @@ class BatteryIndicator extends FlxSprite {
         ++frameNo;
 
         alpha = 0;
-        if ((charge > 0.2 && charge < 0.5 && (frameNo&8) != 0)) {
-            alpha = 0.5;
-        } else if (charge < 0.2 && (frameNo&4) != 0) {
-            alpha = 0.75;
+        if (Params.isCheaty()) {
+            if ((charge > 0.2 && charge < 0.5 && (frameNo&8) != 0)) {
+                alpha = 0.5;
+            } else if (charge < 0.2 && (frameNo&4) != 0) {
+                alpha = 0.75;
+            }
         }
     }
 }

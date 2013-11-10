@@ -25,6 +25,11 @@ class Backdark extends FlxSprite {
             alpha = (alpha*15+target)/16;
         }
 
+        if (!Params.isCheaty()) {
+            target = Std.int(target);
+            alpha = target;
+        }
+
     }
 
 }
