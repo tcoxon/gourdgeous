@@ -1,6 +1,7 @@
 package;
 
 import org.flixel.*;
+import org.flixel.util.FlxTimer;
 
 import TextSprite;
 import MenuSprite;
@@ -156,7 +157,17 @@ class PlayState extends FlxState {
     }
 
     public function endGameDone() {
-        FlxG.camera.fade(0xff000000, 3, fadedOut);
+        if (score >= 100) {
+            FlxG.camera.fade(0xff000000, 3, fadedOut);
+        } else {
+            new FlxTimer().start(1,1, function(_) {
+                backdark.alpha = 1;
+                backdark.enableFade = false;
+                new FlxTimer().start(1,1, function(_) {
+                    fadedOut();
+                });
+            });
+        }
     }
 
     public function fadedOut() {
