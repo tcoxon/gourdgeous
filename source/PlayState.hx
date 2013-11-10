@@ -23,6 +23,8 @@ class PlayState extends FlxState {
     var glitchLayer: FlxGroup;
     var screenLayer: FlxGroup;
 
+    var walkingPixels: FlxGroup;
+
     var score(get,set): Int;
     private var fScore: Int;
     var question: Int;
@@ -36,6 +38,8 @@ class PlayState extends FlxState {
         add(glitchLayer);
         screenLayer = new FlxGroup();
         add(screenLayer);
+
+        walkingPixels = new FlxGroup();
 
         screenLayer.add(backdark = new Backdark());
         screenLayer.add(batteryIndicator = new BatteryIndicator());
@@ -152,7 +156,7 @@ class PlayState extends FlxState {
     }
 
     public function endGameDone() {
-        FlxG.camera.fade(0xff000000, 5, fadedOut);
+        FlxG.camera.fade(0xff000000, 3, fadedOut);
     }
 
     public function fadedOut() {
@@ -161,6 +165,17 @@ class PlayState extends FlxState {
 
     override public function update() {
         super.update();
+
+        if (FlxG.random() < 1./512) {
+            var wp:FlxSprite = cast(walkingPixels.getRandom(), FlxSprite);
+            if (wp != null) {
+                wp.kill();
+                var burstPixel = new FlxSprite(wp.x-8, wp.y-8);
+                burstPixel.loadGraphic("assets/gourdgeous/burst-pixel.png");
+                screenLayer.add(burstPixel);
+            }
+        }
+
 
         var progress = (score-50)/50;
         if (progress < 0) progress = 0;
@@ -179,6 +194,7 @@ class PlayState extends FlxState {
             else
                 wp.y = FlxG.random() * wp.y;
             glitchLayer.add(wp);
+            walkingPixels.add(wp);
         }
 
         if (progress >= 1) {
@@ -194,10 +210,11 @@ class PlayState extends FlxState {
 
             if (FlxG.random() < 1./64) {
                 pumpkin.glitch();
+                Sounds.GLITCH.play();
             }
 
-            if (FlxG.random() < 1./64.) {
-                Sounds.GLITCH.play();
+            if (FlxG.random() < 1./32.) {
+                candle.value = Std.int(FlxG.random()*6);
             }
         }
     }
