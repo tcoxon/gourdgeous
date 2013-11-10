@@ -44,8 +44,8 @@ class PlayState extends FlxState {
 
         screenLayer.add(backdark = new Backdark());
         screenLayer.add(batteryIndicator = new BatteryIndicator());
-        batteryIndicator.x = 144;
-        batteryIndicator.y = 96;
+        batteryIndicator.x = -48;
+        batteryIndicator.y = 0;
 
         var backBackground = new FlxSprite();
         backBackground.makeGraphic(200, 200, Palette.getColor(0));
