@@ -7,6 +7,7 @@ import MenuSprite;
 import Dialogue;
 import Pumpkin;
 import Candle;
+import Backdark;
 
 
 class PlayState extends FlxState {
@@ -14,6 +15,8 @@ class PlayState extends FlxState {
     var pumpkin: Pumpkin;
     var candle: Candle;
     var glitchBar: GlitchBar;
+
+    var backdark: Backdark;
 
     var baseLayer: FlxGroup;
     var glitchLayer: FlxGroup;
@@ -32,6 +35,8 @@ class PlayState extends FlxState {
         add(glitchLayer);
         screenLayer = new FlxGroup();
         add(screenLayer);
+
+        screenLayer.add(backdark = new Backdark());
 
         var background = new FlxSprite();
         background.loadGraphic("assets/gourdgeous/Background.png");
@@ -144,20 +149,23 @@ class PlayState extends FlxState {
     override public function update() {
         super.update();
 
-        if (score > 50) {
-            var progress = (score-50)/50;
-            progress *= progress;
-            var threshold = 1 - progress * 0.7;
-            if (FlxG.random() > threshold) {
-                var wp = new WalkingPixel();
-                wp.x = 160;
-                wp.y = 144;
-                if (FlxG.random() < 0.5)
-                    wp.x = FlxG.random() * wp.x;
-                else
-                    wp.y = FlxG.random() * wp.y;
-                glitchLayer.add(wp);
-            }
+        var progress = (score-50)/50;
+        if (progress < 0) progress = 0;
+
+        progress *= progress;
+        var threshold = 1 - progress * 0.7;
+        if (FlxG.random() > threshold) {
+            var wp = new WalkingPixel();
+            wp.x = 160;
+            wp.y = 144;
+            if (FlxG.random() < 0.5)
+                wp.x = FlxG.random() * wp.x;
+            else
+                wp.y = FlxG.random() * wp.y;
+            glitchLayer.add(wp);
         }
+
+        backdark.target = progress * 0.8;
+
     }
 }
