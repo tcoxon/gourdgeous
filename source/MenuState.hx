@@ -14,14 +14,14 @@ import org.flixel.util.FlxMath;
 
 import Sounds;
 import Palette;
+import TextSprite;
 
-class MenuState extends FlxState
-{
-	/**
-	 * Function that is called up when to state is created to set it up. 
-	 */
-	override public function create():Void
-	{
+class MenuState extends FlxState {
+    
+    public var pressText: TextSprite;
+    public var frameNo: Int;
+
+	override public function create() {
 		// Set a background color
         flash.Lib.current.opaqueBackground = 0xff000000;
         FlxG.camera.bgColor = FlxG.bgColor = Palette.getColor(0);
@@ -35,24 +35,32 @@ class MenuState extends FlxState
         Sounds.init();
 		
 		super.create();
+
+        var background = new FlxSprite();
+        background.loadGraphic("assets/gourdgeous/title-screen.png");
+        add(background);
+
+        pressText = new TextSprite(88, 88, 64, 32);
+        pressText.text = "PRESS START";
+        add(pressText);
+
+        frameNo = 0;
 	}
 	
-	/**
-	 * Function that is called when this state is destroyed - you might want to 
-	 * consider setting all objects this state uses to null to help garbage collection.
-	 */
-	override public function destroy():Void
-	{
-		super.destroy();
-	}
+    private static var BUTTONS = ["X", "C", "UP", "RIGHT", "DOWN", "LEFT"];
 
-	/**
-	 * Function that is called once every frame.
-	 */
-	override public function update():Void
-	{
+	override public function update() {
 		super.update();
-        FlxG.switchState(new PlayState());
+        
+        for (b in BUTTONS) {
+            if (FlxG.keys.justPressed(b)) {
+                FlxG.switchState(new PlayState());
+                return;
+            }
+        }
+
+        ++frameNo;
+        pressText.alpha = if (frameNo&4 == 0) 1 else 0;
 	}	
 
 }
