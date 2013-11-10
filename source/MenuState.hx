@@ -13,6 +13,7 @@ import org.flixel.FlxText;
 import org.flixel.util.FlxMath;
 
 import Sounds;
+import Palette;
 
 class MenuState extends FlxState
 {
@@ -22,7 +23,8 @@ class MenuState extends FlxState
 	override public function create():Void
 	{
 		// Set a background color
-		FlxG.bgColor = 0xffbf9154;
+        flash.Lib.current.opaqueBackground = 0xff000000;
+        FlxG.camera.bgColor = FlxG.bgColor = Palette.getColor(0);
 
 		// Show the mouse (in case it hasn't been disabled)
 		#if !FLX_NO_MOUSE

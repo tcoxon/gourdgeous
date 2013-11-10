@@ -42,6 +42,12 @@ class PlayState extends FlxState {
         batteryIndicator.x = 144;
         batteryIndicator.y = 96;
 
+        var backBackground = new FlxSprite();
+        backBackground.makeGraphic(200, 200, Palette.getColor(0));
+        backBackground.x = -20;
+        backBackground.y = -20;
+        baseLayer.add(backBackground);
+
         var background = new FlxSprite();
         background.loadGraphic("assets/gourdgeous/Background.png");
         baseLayer.add(background);
@@ -146,9 +152,12 @@ class PlayState extends FlxState {
     }
 
     public function endGameDone() {
-        FlxG.switchState(new MenuState());
+        FlxG.camera.fade(0xff000000, 5, fadedOut);
     }
 
+    public function fadedOut() {
+        FlxG.switchState(new MenuState());
+    }
 
     override public function update() {
         super.update();
@@ -172,5 +181,25 @@ class PlayState extends FlxState {
             glitchLayer.add(wp);
         }
 
+        if (progress >= 1) {
+            if (FlxG.random() < 1./32.) {
+                FlxG.camera.shake(2/160.0, 1./8., null, false, 
+                    FlxCamera.SHAKE_BOTH_AXES);
+            }
+
+            if (FlxG.random() < 1./128.) {
+                pumpkin.background.replaceColor(Palette.getColor(1),
+                    Palette.getColor(3));
+            }
+
+            if (FlxG.random() < 1./64) {
+                pumpkin.glitch();
+            }
+
+            if (FlxG.random() < 1./64.) {
+                Sounds.GLITCH.play();
+            }
+        }
     }
+
 }

@@ -51,6 +51,12 @@ class Pumpkin extends MovableGroup {
         this.face.loadGraphic("assets/gourdgeous/Faces/"+face+".png");
     }
 
+    public function glitch() {
+        face.loadGraphic("assets/gourdgeous/Faces/glitch.png");
+        face.addAnimation("glitch", [0,1,2,3,4], 16, false);
+        face.play("glitch");
+    }
+
     public function updateFaceForScore(score: Int) {
         this.score = score;
         var bestD = 999999.;
@@ -110,6 +116,10 @@ class Pumpkin extends MovableGroup {
             var period = 8;
             var t = frames % period;
             face.y = Std.int(Math.cos(t * 2 * Math.PI / period) * 2 + baseY);
+        }
+
+        if (face.finished) {
+            setFace(currentFace);
         }
     }
 }
