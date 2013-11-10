@@ -6,11 +6,13 @@ import TextSprite;
 import MenuSprite;
 import Dialogue;
 import Pumpkin;
+import Candle;
 
 
 class PlayState extends FlxState {
 
     var pumpkin: Pumpkin;
+    var candle: Candle;
 
     var score: Int;
     var question: Int;
@@ -25,6 +27,11 @@ class PlayState extends FlxState {
         pumpkin = new Pumpkin();
         pumpkin.x = pumpkin.y = 48;
         add(pumpkin);
+
+        add(candle = new Candle());
+        candle.x = 16;
+        candle.y = 56;
+        candle.onTimeOut = timedOut;
 
         startGame();
     }
@@ -58,12 +65,13 @@ class PlayState extends FlxState {
 
         add(menuspr = new MenuSprite([for (ans in q.answers)
                                 new MenuOption(ans.text, answerChosen)]));
-        // TODO display menu, candle
+        candle.resetCandle();
     }
 
     public function answerChosen(ansNo: Int) {
         textspr.kill(); textspr = null;
         menuspr.kill(); menuspr = null;
+        candle.stopCandle();
 
         var q = Dialogue.QUESTIONS[question];
         var a = q.answers[ansNo];
@@ -80,6 +88,7 @@ class PlayState extends FlxState {
     public function timedOut() {
         textspr.kill(); textspr = null;
         menuspr.kill(); menuspr = null;
+        candle.stopCandle();
         endGame(Dialogue.OUT_OF_TIME_ENDING);
     }
 
