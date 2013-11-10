@@ -17,6 +17,7 @@ class PlayState extends FlxState {
     var glitchBar: GlitchBar;
 
     var backdark: Backdark;
+    var batteryIndicator: BatteryIndicator;
 
     var baseLayer: FlxGroup;
     var glitchLayer: FlxGroup;
@@ -37,6 +38,9 @@ class PlayState extends FlxState {
         add(screenLayer);
 
         screenLayer.add(backdark = new Backdark());
+        screenLayer.add(batteryIndicator = new BatteryIndicator());
+        batteryIndicator.x = 144;
+        batteryIndicator.y = 96;
 
         var background = new FlxSprite();
         background.loadGraphic("assets/gourdgeous/Background.png");
@@ -152,6 +156,9 @@ class PlayState extends FlxState {
         var progress = (score-50)/50;
         if (progress < 0) progress = 0;
 
+        backdark.target = progress * 0.7;
+        batteryIndicator.charge = 1-progress;
+
         progress *= progress;
         var threshold = 1 - progress * 0.7;
         if (FlxG.random() > threshold) {
@@ -164,8 +171,6 @@ class PlayState extends FlxState {
                 wp.y = FlxG.random() * wp.y;
             glitchLayer.add(wp);
         }
-
-        backdark.target = progress * 0.8;
 
     }
 }
